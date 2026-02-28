@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
@@ -22,7 +23,7 @@
             <HBox fx:id="hboxBottom" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="650.0" spacing="10.0" style="-fx-background-color: beige;" />
          </children>
       </VBox>
-      <Label layoutX="112.0" layoutY="147.0" text="60">
+      <Label fx:id="timerLbl" layoutX="112.0" layoutY="147.0" text="60">
          <font>
             <Font size="30.0" />
          </font>
@@ -30,13 +31,9 @@
             <Glow level="0.5" />
          </effect>
       </Label>
-      <ImageView fitHeight="41.0" fitWidth="86.0" layoutX="516.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true" >
-         <image>
-            <Image url="@images/reset.png" />
-         </image>
-      </ImageView>
+      <Button fx:id="resetBtn" layoutX="510.0" layoutY="142.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="84.0" text="Button" style="-fx-background-color: transparent"/>
 
-      <ImageView fitHeight="181.0" fitWidth="172.0" layoutX="572.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="181.0" fitWidth="172.0" layoutX="571.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/soyTransparent.png" />
          </image>
