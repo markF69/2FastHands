@@ -17,6 +17,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("UI/GameUI.fxml"));
         stage.setTitle("2FastHands");
         stage.setScene(new Scene(root));
+        stage.setResizable(false);
         stage.show();
     }
 }
