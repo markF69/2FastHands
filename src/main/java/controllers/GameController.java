@@ -15,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -32,6 +35,10 @@ public class GameController{
     private Label timerLbl;
     @FXML
     private Button resetBtn;
+    @FXML
+    private HBox hboxTop;
+    @FXML
+    private HBox hboxBottom;
 
     @FXML
     private void initialize(){
@@ -42,12 +49,15 @@ public class GameController{
             e.printStackTrace();
             System.out.println("Failed to load english 1k");
         }
+
         Image img = new Image(getClass().getResourceAsStream("/UI/images/reset.png"));
         ImageView resetImg = new ImageView(img);
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
-        resetBtn.setOnMouseClicked(e -> startTimer());
+        resetBtn.setOnMouseClicked(e -> {
+            hboxTop.getChildren().add(new Text("Click!"));
+        });
 
 
     }
