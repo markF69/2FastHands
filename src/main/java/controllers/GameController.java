@@ -68,7 +68,7 @@ public class GameController{
             Text test = new Text("Click!");
             double textWidth = test.getLayoutBounds().getWidth();
             System.out.println("TW " + textWidth);
-            if (totalTextWidth[0] + textWidth < 388){ // hardcoded 388 because the width of the hbox isn't changing
+            if (totalTextWidth[0] + textWidth < 388){ // 388 because the width of the hbox isn't changing
                 hboxTop.getChildren().add(test);
                 totalTextWidth[0] += textWidth;
                 System.out.println("TTTW " + totalTextWidth[0]);
