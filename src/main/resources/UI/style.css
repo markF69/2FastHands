@@ -1,4 +1,4 @@
 /* universal for all text objects */
-.text{
-    font-size: 15px;
+Text {
+    -fx-font-size: 30px;
 }
