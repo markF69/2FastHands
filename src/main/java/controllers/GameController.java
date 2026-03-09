@@ -4,9 +4,9 @@ import com.sun.tools.javac.Main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
-import java.beans.EventHandler;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,6 +15,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
@@ -39,6 +42,8 @@ public class GameController{
     private HBox hboxTop;
     @FXML
     private HBox hboxBottom;
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private void initialize(){
@@ -55,9 +60,26 @@ public class GameController{
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
+
+        double topBoxWidth = hboxTop.getPrefWidth();
+        System.out.println(topBoxWidth);
+        double[] totalTextWidth = {0,0}; // top - bottom
         resetBtn.setOnMouseClicked(e -> {
-            hboxTop.getChildren().add(new Text("Click!"));
+            Text test = new Text("Click!");
+            double textWidth = test.getLayoutBounds().getWidth();
+            System.out.println("TW " + textWidth);
+            if (totalTextWidth[0] + textWidth < 388){ // hardcoded 388 because the width of the hbox isn't changing
+                hboxTop.getChildren().add(test);
+                totalTextWidth[0] += textWidth;
+                System.out.println("TTTW " + totalTextWidth[0]);
+            } else if (totalTextWidth[1] + textWidth < 388){
+                hboxBottom.getChildren().add(test);
+                totalTextWidth[1] += textWidth;
+                System.out.println("BTTW " + totalTextWidth[1]);
+            }
         });
+
+
 
 
     }
