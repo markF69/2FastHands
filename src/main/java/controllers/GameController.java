@@ -59,30 +59,7 @@ public class GameController{
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
-
-
-        //System.out.println(topBoxWidth);
-
-//        resetBtn.setOnMouseClicked(e -> {
-//            Text test = new Text("Click!");
-//            double textWidth = test.getLayoutBounds().getWidth();
-//            System.out.println("TW " + textWidth);
-//            if (totalTextWidth[0] + textWidth < 388){ // 388 because the width of the hbox isn't changing
-//                hboxTop.getChildren().add(test);
-//                totalTextWidth[0] += textWidth;
-//                System.out.println("TTTW " + totalTextWidth[0]);
-//            } else if (totalTextWidth[1] + textWidth < 388){
-//                hboxBottom.getChildren().add(test);
-//                totalTextWidth[1] += textWidth;
-//                System.out.println("BTTW " + totalTextWidth[1]);
-//            }
-//        });
-
         resetBtn.setOnMouseClicked(e -> populateBox(randomWords, randomQuote));
-
-
-
-
     }
 
     // meant to populate the 2 hboxes - runs on startup
