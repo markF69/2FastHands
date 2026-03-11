@@ -19,14 +19,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameController{
-
-    private Timeline timer;
-    private int secondsLeft = 60;
-
-
     @FXML
     private Label timerLbl;
     @FXML
@@ -37,6 +33,13 @@ public class GameController{
     private HBox hboxBottom;
     @FXML
     private AnchorPane mainPane;
+
+
+
+    private Timeline timer;
+    private int secondsLeft = 60;
+    Random random = new Random();
+    //double topBoxWidth = hboxTop.getPrefWidth();
 
     @FXML
     private void initialize(){
@@ -57,9 +60,9 @@ public class GameController{
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
 
-        double topBoxWidth = hboxTop.getPrefWidth();
+
         //System.out.println(topBoxWidth);
-        double[] totalTextWidth = {0,0}; // top - bottom
+
 //        resetBtn.setOnMouseClicked(e -> {
 //            Text test = new Text("Click!");
 //            double textWidth = test.getLayoutBounds().getWidth();
@@ -82,16 +85,63 @@ public class GameController{
 
     }
 
-    // function meant to populate the 2 hboxes - runs on startup of the window
+    // meant to populate the 2 hboxes - runs on startup
     private void populateBox(List<String> randomWords, List<String> randomQuote){
+        System.out.println("POPULATE");
         // if elements are present in both
         if (!(hboxTop.getChildren().isEmpty() && hboxBottom.getChildren().isEmpty())){
             hboxTop.getChildren().clear();
             hboxBottom.getChildren().clear();
         }
 
-        System.out.println(randomWords.removeFirst() + "\n" + randomQuote.removeFirst());
+        //int quoteRandParts = random.nextInt(2, 6); // gets 3-5 words from a quote that will be "sprinkled" along with other words
+        String quote = randomQuote.removeFirst();
+        String[] quoteWords = quote.split(" ");
+        double[] totalTextWidth = {0,0}; // top - bottom
+        //int[] counters = {0,0};
+
+
+        int counter=0;
+        int counterW=0;
+        while (true){
+            Text word = new Text(randomWords.removeFirst());
+            double wordWidth = word.getLayoutBounds().getWidth();
+            // if there is space in the top box add the element
+            if (totalTextWidth[0] + wordWidth < 388){ // 388 is the edge
+                if (counter > 0 && counter % 4 == 0){ // every 4th word will be a part of the quote
+                    Text txt = new Text(quoteWords[counterW++]);
+                    if (totalTextWidth[0] + txt.getLayoutBounds().getWidth() < 388){
+                        hboxTop.getChildren().add(txt);
+                        totalTextWidth[0] += txt.getLayoutBounds().getWidth();
+                    }
+                } else{
+                    hboxTop.getChildren().add(word);
+                    totalTextWidth[0] += wordWidth;
+                }
+                counter++;
+            } else if (totalTextWidth[1] + wordWidth < 388){
+                if (counter % 4 == 0){ // every 4th word will be a part of the quote
+                    Text txt = new Text(quoteWords[counterW++]);
+                    if (totalTextWidth[1] + txt.getLayoutBounds().getWidth() < 388){
+                        hboxBottom.getChildren().add(txt);
+                        totalTextWidth[1] += txt.getLayoutBounds().getWidth();
+                    }
+                } else{
+                    hboxBottom.getChildren().add(word);
+                    totalTextWidth[1] += wordWidth;
+                }
+
+                counter++;
+            } else{
+                break; // if both are full
+            }
+        }
+
+
+        System.out.println(quote);
+
     }
+
 
     // will be used when you start typing - currently bound to button for testing
     private void startTimer(){
