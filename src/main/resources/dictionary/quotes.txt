@@ -19,5 +19,5 @@ We cannot solve our problems with the same thinking we used when we created them
 I was already slipping when you happened to punch me in the face. The two events are not related.
 It's much better to do good in a way that no one knows anything about it.
 For every thousand hacking at the leaves of evil, there is one striking at the root.
-Hello World :)
+Print Hello World right now.
 When the character of a man is not clear to you, look at his friends.
