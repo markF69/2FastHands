@@ -86,6 +86,7 @@ public class GameController{
     }
 
     // meant to populate the 2 hboxes - runs on startup
+    // first part of the game
     private void populateBox(List<String> randomWords, List<String> randomQuote){
         System.out.println("POPULATE");
         // if elements are present in both
@@ -94,54 +95,43 @@ public class GameController{
             hboxBottom.getChildren().clear();
         }
 
-        //int quoteRandParts = random.nextInt(2, 6); // gets 3-5 words from a quote that will be "sprinkled" along with other words
         String quote = randomQuote.removeFirst();
         String[] quoteWords = quote.split(" ");
         double[] totalTextWidth = {0,0}; // top - bottom
-        //int[] counters = {0,0};
-
-
-        int counter=0;
-        int counterW=0;
+        int[] counters = {0,0};
+//        int counter=0;
+//        int counterW=0;
         while (true){
             Text word = new Text(randomWords.removeFirst());
-            double wordWidth = word.getLayoutBounds().getWidth();
-            // if there is space in the top box add the element
-            if (totalTextWidth[0] + wordWidth < 388){ // 388 is the edge
-                if (counter > 0 && counter % 4 == 0){ // every 4th word will be a part of the quote
-                    Text txt = new Text(quoteWords[counterW++]);
-                    if (totalTextWidth[0] + txt.getLayoutBounds().getWidth() < 388){
-                        hboxTop.getChildren().add(txt);
-                        totalTextWidth[0] += txt.getLayoutBounds().getWidth();
-                    }
-                } else{
-                    hboxTop.getChildren().add(word);
-                    totalTextWidth[0] += wordWidth;
-                }
-                counter++;
-            } else if (totalTextWidth[1] + wordWidth < 388){
-                if (counter % 4 == 0){ // every 4th word will be a part of the quote
-                    Text txt = new Text(quoteWords[counterW++]);
-                    if (totalTextWidth[1] + txt.getLayoutBounds().getWidth() < 388){
-                        hboxBottom.getChildren().add(txt);
-                        totalTextWidth[1] += txt.getLayoutBounds().getWidth();
-                    }
-                } else{
-                    hboxBottom.getChildren().add(word);
-                    totalTextWidth[1] += wordWidth;
-                }
-
-                counter++;
-            } else{
-                break; // if both are full
+            if (addWord(hboxTop, word, totalTextWidth, 0, counters, quoteWords)){
+                counters[0]++;
+            } else if (addWord(hboxBottom, word, totalTextWidth, 1, counters, quoteWords)) {
+                counters[0]++;
+            } else {
+                break;
             }
         }
-
-
-        System.out.println(quote);
-
+        //System.out.println(quote);
     }
 
+    private boolean addWord(HBox hbox, Text word, double[] totalTextWidth, int index, int[] counters, String[] quoteWords){
+        double wordWidth = word.getLayoutBounds().getWidth();
+        if (totalTextWidth[index] + wordWidth < 388){
+            if (counters[0] > 0 && counters[0] % 4 == 0 && counters[1] < quoteWords.length){
+                Text txt = new Text(quoteWords[counters[1]]); //counterW
+                if (totalTextWidth[index] + txt.getLayoutBounds().getWidth() < 388){
+                    hbox.getChildren().add(txt);
+                    totalTextWidth[index] += txt.getLayoutBounds().getWidth();
+                    counters[1]++;
+                }
+            } else{
+                hbox.getChildren().add(word);
+                totalTextWidth[index] += wordWidth;
+            }
+            return true;
+        }
+        return false;
+    }
 
     // will be used when you start typing - currently bound to button for testing
     private void startTimer(){
