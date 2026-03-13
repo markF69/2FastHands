@@ -2,3 +2,7 @@
 Text {
     -fx-font-size: 30px;
 }
+
+.windowBackground {
+    -fx-background-color: linear-gradient(to top, #8a8888, #ffffff);
+}
