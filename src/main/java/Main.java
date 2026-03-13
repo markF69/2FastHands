@@ -14,7 +14,7 @@ public class Main extends Application {
     }
 
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("UI/GameUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("UI/IntroUI.fxml"));
         stage.setTitle("2FastHands");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
