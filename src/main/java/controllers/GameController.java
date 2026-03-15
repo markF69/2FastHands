@@ -39,7 +39,7 @@ public class GameController{
     private Timeline timer;
     private int secondsLeft = 60;
     Random random = new Random();
-    //double topBoxWidth = hboxTop.getPrefWidth();
+    private ArrayList<Text> wordList = new ArrayList<>();
 
     @FXML
     private void initialize(){
@@ -54,12 +54,19 @@ public class GameController{
             e.printStackTrace();
             System.out.println("Failed to load dictionary files");
         }
+
         Image img = new Image(getClass().getResourceAsStream("/UI/images/reset.png"));
         ImageView resetImg = new ImageView(img);
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
-        resetBtn.setOnMouseClicked(e -> populateBox(randomWords, randomQuote));
+
+        startTimer();
+        populateBox(randomWords, randomQuote);
+//        for (Text t : wordList){
+//            System.out.println(t.getText());
+//        }
+        //resetBtn.setOnMouseClicked(e -> populateBox(randomWords, randomQuote));
     }
 
     // meant to populate the 2 hboxes - runs on startup
@@ -76,8 +83,7 @@ public class GameController{
         String[] quoteWords = quote.split(" ");
         double[] totalTextWidth = {0,0}; // top - bottom
         int[] counters = {0,0};
-//        int counter=0;
-//        int counterW=0;
+
         while (true){
             Text word = new Text(randomWords.removeFirst());
             if (addWord(hboxTop, word, totalTextWidth, 0, counters, quoteWords)){
@@ -98,11 +104,13 @@ public class GameController{
                 Text txt = new Text(quoteWords[counters[1]]); //counterW
                 if (totalTextWidth[index] + txt.getLayoutBounds().getWidth() < 388){
                     hbox.getChildren().add(txt);
+                    wordList.add(txt);
                     totalTextWidth[index] += txt.getLayoutBounds().getWidth();
                     counters[1]++;
                 }
             } else{
                 hbox.getChildren().add(word);
+                wordList.add(word);
                 totalTextWidth[index] += wordWidth;
             }
             return true;
