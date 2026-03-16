@@ -19,16 +19,6 @@
          <font>
             <Font size="25.0" />
          </font>
-         <effect>
-            <Lighting>
-               <bumpInput>
-                  <Shadow />
-               </bumpInput>
-               <light>
-                  <Light.Distant />
-               </light>
-            </Lighting>
-         </effect>
       </Label>
       <Button fx:id="startBtn" layoutX="423.0" layoutY="362.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="156.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 30px" text="START" textAlignment="CENTER" textFill="#b90f0f" />
       <Label layoutX="572.0" layoutY="381.0" style="-fx-font-weight: bold;" text=" (The game starts as soon as you press start)">
