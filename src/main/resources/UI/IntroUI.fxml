@@ -2,9 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -15,7 +12,7 @@
             <Font size="40.0" />
          </font>
       </Label>
-      <Label layoutX="5.0" layoutY="78.0" prefHeight="268.0" prefWidth="992.0" text="- The game consist of 2 parts, firstly you need type all of the displayed words correctly. &#10;- If you mistype a word, the words refill and the timer continues until you either succeed&#10;  or fail.&#10;- If you correctly type everything out, you will then have a secret word on your screen &#10;   that is shuffled. Your job is to figure out what the word is and type it.&#10;- If you incorrectly type out the word a red &quot;X&quot; will come out. If you succeed the cycle &#10;   repeats itself but with less time.&#10;&#10;&#10;&#10;&#10;&#10;">
+      <Label layoutX="5.0" layoutY="78.0" prefHeight="268.0" prefWidth="992.0" text="- The game consist of 2 parts, firstly you need type all of the displayed words correctly. &#10;- If you mistype a word, you will be stuck at that word until you type it correctly.&#10;- If you correctly type everything out, you will then have a secret word on your screen &#10;   that is shuffled. Your job is to figure out what the word is and type it.&#10;- If you incorrectly type out the word a red &quot;X&quot; will come out. If you succeed the cycle &#10;   repeats itself but with less time.&#10;&#10;&#10;&#10;&#10;&#10;">
          <font>
             <Font size="25.0" />
          </font>
