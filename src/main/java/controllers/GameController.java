@@ -6,10 +6,13 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -33,6 +36,8 @@ public class GameController{
     private HBox hboxBottom;
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private TextField inputTF;
 
 
 
@@ -63,10 +68,25 @@ public class GameController{
 
         startTimer();
         populateBox(randomWords, randomQuote);
-//        for (Text t : wordList){
-//            System.out.println(t.getText());
-//        }
-        //resetBtn.setOnMouseClicked(e -> populateBox(randomWords, randomQuote));
+
+        inputTF.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.SPACE)){
+                String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
+                Text screenWord = wordList.getFirst();
+                String compareToText = screenWord.getText();
+                System.out.println("CURRENT:" + compareToText);
+                if (userText.equals(compareToText)){
+                    System.out.println("GOOD!");
+                    wordList.removeFirst();
+                    screenWord.setFill(Color.GREEN);
+                }
+                else {
+                    System.out.println("BAD!");
+                    screenWord.setFill(Color.RED);
+                }
+                inputTF.clear();
+            }
+        });
     }
 
     // meant to populate the 2 hboxes - runs on startup
@@ -118,7 +138,7 @@ public class GameController{
         return false;
     }
 
-    // will be used when you start typing - currently bound to button for testing
+    // will be used when you start typing
     private void startTimer(){
         if (timer != null && timer.getStatus() == Animation.Status.RUNNING){
             timer.stop();
@@ -130,7 +150,7 @@ public class GameController{
         timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
             secondsLeft--;
             timerLbl.setText(String.valueOf(secondsLeft));
-            System.out.println(secondsLeft);
+            //System.out.println(secondsLeft);
 
             if (secondsLeft == 0){
                 //timerLbl.setText("0");
