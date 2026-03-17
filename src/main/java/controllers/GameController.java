@@ -96,6 +96,11 @@ public class GameController{
                     inputTF.clear();
                     System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
                 }
+
+                // when the last word is typed correctly
+                if (wordList.isEmpty()){
+                    //nextGame();
+                }
             }
         });
 
