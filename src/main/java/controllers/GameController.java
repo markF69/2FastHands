@@ -69,24 +69,39 @@ public class GameController{
         startTimer();
         populateBox(randomWords, randomQuote);
 
+
+        int[] stats = {0,0}; // hit - miss
+        int goal = wordList.size();
         inputTF.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.SPACE)){
-                String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
-                Text screenWord = wordList.getFirst();
-                String compareToText = screenWord.getText();
-                System.out.println("CURRENT:" + compareToText);
-                if (userText.equals(compareToText)){
-                    System.out.println("GOOD!");
-                    wordList.removeFirst();
-                    screenWord.setFill(Color.GREEN);
+                if (!wordList.isEmpty()){
+                    String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
+                    Text screenWord = wordList.getFirst();
+                    String compareToText = screenWord.getText();
+                    System.out.println("CURRENT:" + compareToText);
+                    if (userText.equals(compareToText)){
+                        System.out.println("GOOD!");
+                        wordList.removeFirst();
+                        screenWord.setFill(Color.GREEN);
+                        stats[0]++;
+                    }
+                    else {
+                        System.out.println("BAD!");
+                        screenWord.setFill(Color.RED);
+                        stats[1]++;
+                    }
+                    inputTF.clear();
+                } else {
+                    System.out.println("empty");
+                    inputTF.clear();
+                    System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
                 }
-                else {
-                    System.out.println("BAD!");
-                    screenWord.setFill(Color.RED);
-                }
-                inputTF.clear();
             }
         });
+
+        if (stats[0] == goal){
+            System.out.println("YAY!");
+        }
     }
 
     // meant to populate the 2 hboxes - runs on startup
@@ -103,12 +118,15 @@ public class GameController{
         String[] quoteWords = quote.split(" ");
         double[] totalTextWidth = {0,0}; // top - bottom
         int[] counters = {0,0};
+        boolean topFull = false;
 
         while (true){
             Text word = new Text(randomWords.removeFirst());
-            if (addWord(hboxTop, word, totalTextWidth, 0, counters, quoteWords)){
+            if (!topFull && addWord(hboxTop, word, totalTextWidth, 0, counters, quoteWords)){
                 counters[0]++;
-            } else if (addWord(hboxBottom, word, totalTextWidth, 1, counters, quoteWords)) {
+            }
+            else if (addWord(hboxBottom, word, totalTextWidth, 1, counters, quoteWords)) {
+                if (!topFull) topFull=true;
                 counters[0]++;
             } else {
                 break;
