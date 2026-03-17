@@ -16,7 +16,7 @@
          <font>
             <Font size="24.0" />
          </font></TextField>
-      <VBox layoutX="50.0" layoutY="66.0" prefHeight="200.0" prefWidth="920.0" style="-fx-border-color: black;">
+      <VBox layoutX="50.0" layoutY="66.0" prefHeight="200.0" prefWidth="920.0">
          <children>
             <HBox fx:id="hboxTop" alignment="CENTER_LEFT" minHeight="100.0" prefWidth="920.0" spacing="10.0">
                <opaqueInsets>
