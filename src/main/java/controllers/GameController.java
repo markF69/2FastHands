@@ -19,10 +19,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class GameController{
@@ -45,6 +42,7 @@ public class GameController{
     private int secondsLeft = 60;
     Random random = new Random();
     private ArrayList<Text> wordList = new ArrayList<>();
+    private String currQuote;
 
     @FXML
     private void initialize(){
@@ -78,28 +76,28 @@ public class GameController{
                     String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
                     Text screenWord = wordList.getFirst();
                     String compareToText = screenWord.getText();
-                    System.out.println("CURRENT:" + compareToText);
+                    //System.out.println("CURRENT:" + compareToText);
                     if (userText.equals(compareToText)){
-                        System.out.println("GOOD!");
+                        //System.out.println("GOOD!");
                         wordList.removeFirst();
                         screenWord.setFill(Color.GREEN);
                         stats[0]++;
                     }
                     else {
-                        System.out.println("BAD!");
+                        //System.out.println("BAD!");
                         screenWord.setFill(Color.RED);
                         stats[1]++;
                     }
                     inputTF.clear();
                 } else {
-                    System.out.println("empty");
+                    //System.out.println("empty");
                     inputTF.clear();
                     System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
                 }
 
                 // when the last word is typed correctly
                 if (wordList.isEmpty()){
-                    //nextGame();
+                    nextGame();
                 }
             }
         });
@@ -110,19 +108,20 @@ public class GameController{
     }
 
     // meant to populate the 2 hboxes - runs on startup
-    // first part of the game
+    // populateBox for the first part
     private void populateBox(List<String> randomWords, List<String> randomQuote){
-        System.out.println("POPULATE");
+        //System.out.println("POPULATE");
         // if elements are present in both
         if (!(hboxTop.getChildren().isEmpty() && hboxBottom.getChildren().isEmpty())){
             hboxTop.getChildren().clear();
             hboxBottom.getChildren().clear();
         }
 
+        currQuote = randomQuote.getFirst();
         String quote = randomQuote.removeFirst();
         String[] quoteWords = quote.split(" ");
         double[] totalTextWidth = {0,0}; // top - bottom
-        int[] counters = {0,0};
+        int[] counters = {0,0}; // word counter and quote counter
         boolean topFull = false;
 
         while (true){
@@ -139,7 +138,28 @@ public class GameController{
         }
         //System.out.println(quote);
     }
+    // populateBox for the second part (only quote)
+    private void populateBox(List<String> shuffledQuote){
+        if (!(hboxTop.getChildren().isEmpty() && hboxBottom.getChildren().isEmpty())){
+            hboxTop.getChildren().clear();
+            hboxBottom.getChildren().clear();
+        }
 
+        double[] totalTextWidth = {0,0}; // top - bottom
+
+        while(!shuffledQuote.isEmpty()){
+            Text word = new Text(shuffledQuote.removeFirst());
+            // doesn't fit top -> doesn't fit bottom -> break
+            if (!addWord(hboxTop, word, totalTextWidth, 0)){ // can probably work without topfull because
+                if (!addWord(hboxBottom, word, totalTextWidth, 1)) {
+                    System.out.println("------ WORD TOO LONG ------");
+                    break;
+                }
+            }
+        }
+
+    }
+    // addWord for the first part
     private boolean addWord(HBox hbox, Text word, double[] totalTextWidth, int index, int[] counters, String[] quoteWords){
         double wordWidth = word.getLayoutBounds().getWidth();
         if (totalTextWidth[index] + wordWidth < 388){
@@ -159,6 +179,16 @@ public class GameController{
             return true;
         }
         return false;
+    }
+    // addword for the second part
+    private boolean addWord(HBox hbox, Text word, double[] totalTextWidth, int index){
+        double wordWidth = word.getLayoutBounds().getWidth();
+        if (totalTextWidth[index] + wordWidth < 388){
+            hbox.getChildren().add(word);
+            totalTextWidth[index] += wordWidth;
+            return true;
+        }
+        return false; // can't fit
     }
 
     // will be used when you start typing
@@ -185,5 +215,15 @@ public class GameController{
         secondsLeft = 60;
         timerLbl.setText("60");
         timer.playFromStart();
+    }
+
+    // second part of the game
+    private void nextGame(){
+        System.out.println("==== SECOND PART ====");
+        System.out.println(currQuote);
+        List<String> shuffledQuote = new ArrayList<>();
+        shuffledQuote.addAll(Arrays.asList(currQuote.split(" ")));
+        Collections.shuffle(shuffledQuote);
+        populateBox(shuffledQuote);
     }
 }
