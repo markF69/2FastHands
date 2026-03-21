@@ -64,47 +64,7 @@ public class GameController{
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
 
-        startTimer();
-        populateBox(randomWords, randomQuote);
-
-
-        int[] stats = {0,0}; // hit - miss
-        int goal = wordList.size();
-        inputTF.setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.SPACE)){
-                if (!wordList.isEmpty()){
-                    String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
-                    Text screenWord = wordList.getFirst();
-                    String compareToText = screenWord.getText();
-                    //System.out.println("CURRENT:" + compareToText);
-                    if (userText.equals(compareToText)){
-                        //System.out.println("GOOD!");
-                        wordList.removeFirst();
-                        screenWord.setFill(Color.GREEN);
-                        stats[0]++;
-                    }
-                    else {
-                        //System.out.println("BAD!");
-                        screenWord.setFill(Color.RED);
-                        stats[1]++;
-                    }
-                    inputTF.clear();
-                } else {
-                    //System.out.println("empty");
-                    inputTF.clear();
-                    System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
-                }
-
-                // when the last word is typed correctly
-                if (wordList.isEmpty()){
-                    nextGame();
-                }
-            }
-        });
-
-        if (stats[0] == goal){
-            System.out.println("YAY!");
-        }
+        firstGame(randomWords, randomQuote);
     }
 
     // meant to populate the 2 hboxes - runs on startup
@@ -217,8 +177,51 @@ public class GameController{
         timer.playFromStart();
     }
 
-    // second part of the game
-    private void nextGame(){
+    private void firstGame(List<String> randomWords, List<String> randomQuote){
+        startTimer();
+        populateBox(randomWords, randomQuote);
+
+
+        int[] stats = {0,0}; // hit - miss
+        int goal = wordList.size();
+        inputTF.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.SPACE)){
+                if (!wordList.isEmpty()){
+                    String userText = inputTF.getText().trim(); // trim is used because of the "space" carryover
+                    Text screenWord = wordList.getFirst();
+                    String compareToText = screenWord.getText();
+                    //System.out.println("CURRENT:" + compareToText);
+                    if (userText.equals(compareToText)){
+                        //System.out.println("GOOD!");
+                        wordList.removeFirst();
+                        screenWord.setFill(Color.GREEN);
+                        stats[0]++;
+                    }
+                    else {
+                        //System.out.println("BAD!");
+                        screenWord.setFill(Color.RED);
+                        stats[1]++;
+                    }
+                    inputTF.clear();
+                } else {
+                    //System.out.println("empty");
+                    inputTF.clear();
+                    System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
+                }
+
+                // when the last word is typed correctly
+                if (wordList.isEmpty()){
+                    secondGame();
+                }
+            }
+        });
+
+        if (stats[0] == goal){
+            System.out.println("YAY!");
+        }
+    }
+    private void secondGame(){
+        inputTF.setOnKeyPressed(null); // removes the first handler
         System.out.println("==== SECOND PART ====");
         System.out.println(currQuote);
         List<String> shuffledQuote = new ArrayList<>();
