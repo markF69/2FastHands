@@ -1,5 +1,4 @@
 The quick brown fox jumps over the lazy dog.
-Don't argue, my dear child, please don't argue! It's such a waste of precious time!
 I learnt long ago to hate my enemies, but I've never loved one before.
 We are only as strong as we are united, as weak as we are divided.
 I can wait for the galaxy outside to get a little kinder.
@@ -16,7 +15,7 @@ That which does not kill us makes us stronger.
 Try to write this sentence while it's broken up.
 It's easy not to abuse your power when you don't actually have any power.
 We cannot solve our problems with the same thinking we used when we created them.
-I was already slipping when you happened to punch me in the face. The two events are not related.
+I was already slipping when you happened to punch me in the face.
 It's much better to do good in a way that no one knows anything about it.
 For every thousand hacking at the leaves of evil, there is one striking at the root.
 Print Hello World right now.
