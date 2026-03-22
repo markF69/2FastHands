@@ -63,6 +63,7 @@ public class GameController{
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
         resetBtn.setGraphic(resetImg);
+        resetBtn.setVisible(false);
 
         firstGame(randomWords, randomQuote);
     }
@@ -168,7 +169,8 @@ public class GameController{
             if (secondsLeft == 0){
                 //timerLbl.setText("0");
                 timer.stop();
-                System.out.printf("Timer stopped");
+                //System.out.printf("Timer stopped");
+                //Alert
             }
         }));
         timer.setCycleCount(Animation.INDEFINITE);
@@ -228,5 +230,26 @@ public class GameController{
         shuffledQuote.addAll(Arrays.asList(currQuote.split(" ")));
         Collections.shuffle(shuffledQuote);
         populateBox(shuffledQuote);
+
+//        double originalWidth = inputTF.getPrefWidth();
+//        double originalX = inputTF.getTranslateX();
+//        inputTF.setTranslateX(-250);
+//        inputTF.setPrefWidth(originalWidth + 500);
+
+        inputTF.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)){
+                StringBuilder userText = new StringBuilder(inputTF.getText()); // stringbuilder because of in place remove
+                if (userText.charAt(0) == ' '){
+                    //System.out.println("EMPTY SPACE DETECTED");
+                    userText.deleteCharAt(0);
+                }
+                //System.out.println(userText);
+                if (userText.toString().equals(currQuote)){
+                    System.out.println("good goy");
+                } else{
+                    resetBtn.setVisible(true);
+                }
+            }
+        });
     }
 }
