@@ -2,9 +2,9 @@ package controllers;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.sound.SoundClip;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,8 +28,6 @@ public class GameController{
     @FXML
     private Label timerLbl;
     @FXML
-    private Button resetBtn;
-    @FXML
     private HBox hboxTop;
     @FXML
     private HBox hboxBottom;
@@ -35,6 +35,8 @@ public class GameController{
     private AnchorPane mainPane;
     @FXML
     private TextField inputTF;
+    @FXML
+    private ImageView xImg;
 
 
 
@@ -58,12 +60,12 @@ public class GameController{
             System.out.println("Failed to load dictionary files");
         }
 
-        Image img = new Image(getClass().getResourceAsStream("/UI/images/reset.png"));
+        Image img = new Image(getClass().getResourceAsStream("/UI/images/X.png"));
         ImageView resetImg = new ImageView(img);
         resetImg.setFitWidth(85);
         resetImg.setFitHeight(45);
-        resetBtn.setGraphic(resetImg);
-        resetBtn.setVisible(false);
+        xImg.setImage(img);
+        xImg.setVisible(false);
 
         firstGame(randomWords, randomQuote);
     }
@@ -174,9 +176,10 @@ public class GameController{
             }
         }));
         timer.setCycleCount(Animation.INDEFINITE);
-        secondsLeft = 60;
+        //secondsLeft = 60;
         timerLbl.setText("60");
         timer.playFromStart();
+        System.out.println("Niggerniggernigger");
     }
 
     private void firstGame(List<String> randomWords, List<String> randomQuote){
@@ -246,8 +249,21 @@ public class GameController{
                 //System.out.println(userText);
                 if (userText.toString().equals(currQuote)){
                     System.out.println("good goy");
-                } else{
-                    resetBtn.setVisible(true);
+                }
+                else{
+                    xImg.setVisible(true);
+                    PauseTransition showX = new PauseTransition(Duration.seconds(1.5));
+                    showX.setOnFinished(eX -> xImg.setVisible(false));
+                    showX.play();
+
+                    SoundClip wrongBuzzer;
+                    try {
+                        // regular buzzer is extremely loud
+                        wrongBuzzer = SoundClip.createSoundClip(new File("src/main/resources/UI/sound/buzzer(-70%).wav"));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    wrongBuzzer.play();
                 }
             }
         });
