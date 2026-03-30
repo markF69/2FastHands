@@ -41,7 +41,7 @@ public class GameController{
 
 
     private Timeline timer;
-    private int secondsLeft = 60;
+    private int secondsLeft = 500;
     Random random = new Random();
     private ArrayList<Text> wordList = new ArrayList<>();
     private String currQuote;
@@ -66,6 +66,7 @@ public class GameController{
         resetImg.setFitHeight(45);
         xImg.setImage(img);
         xImg.setVisible(false);
+
 
         firstGame(randomWords, randomQuote);
     }
@@ -171,21 +172,19 @@ public class GameController{
             if (secondsLeft == 0){
                 //timerLbl.setText("0");
                 timer.stop();
-                //System.out.printf("Timer stopped");
-                //Alert
+                System.out.println("Timer stopped");
             }
         }));
         timer.setCycleCount(Animation.INDEFINITE);
         //secondsLeft = 60;
-        timerLbl.setText("60");
+        timerLbl.setText(String.valueOf(secondsLeft));
         timer.playFromStart();
-        System.out.println("Niggerniggernigger");
     }
 
     private void firstGame(List<String> randomWords, List<String> randomQuote){
         startTimer();
         populateBox(randomWords, randomQuote);
-
+        System.out.println(randomWords.size() + " " + randomQuote.size());
 
         int[] stats = {0,0}; // hit - miss
         int goal = wordList.size();
@@ -208,15 +207,13 @@ public class GameController{
                         stats[1]++;
                     }
                     inputTF.clear();
-                } else {
-                    //System.out.println("empty");
-                    inputTF.clear();
-                    System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
                 }
 
                 // when the last word is typed correctly
                 if (wordList.isEmpty()){
-                    secondGame();
+                    //inputTF.clear();
+                    System.out.println("Hit: " + (stats[0]-stats[1]) + "\nMiss: " + stats[1]);
+                    secondGame(randomWords,randomQuote);
                 }
             }
         });
@@ -225,7 +222,8 @@ public class GameController{
             System.out.println("YAY!");
         }
     }
-    private void secondGame(){
+    // second game has parameters so that it can pass them on to the first game again
+    private void secondGame(List<String> randomWords, List<String> randomQuote){
         inputTF.setOnKeyPressed(null); // removes the first handler
         System.out.println("==== SECOND PART ====");
         System.out.println(currQuote);
@@ -233,11 +231,6 @@ public class GameController{
         shuffledQuote.addAll(Arrays.asList(currQuote.split(" ")));
         Collections.shuffle(shuffledQuote);
         populateBox(shuffledQuote);
-
-//        double originalWidth = inputTF.getPrefWidth();
-//        double originalX = inputTF.getTranslateX();
-//        inputTF.setTranslateX(-250);
-//        inputTF.setPrefWidth(originalWidth + 500);
 
         inputTF.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)){
@@ -248,7 +241,9 @@ public class GameController{
                 }
                 //System.out.println(userText);
                 if (userText.toString().equals(currQuote)){
-                    System.out.println("good goy");
+                    inputTF.setOnKeyPressed(null);
+                    inputTF.clear();
+                    firstGame(randomWords,randomQuote);
                 }
                 else{
                     xImg.setVisible(true);
