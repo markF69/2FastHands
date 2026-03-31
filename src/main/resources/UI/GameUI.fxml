@@ -40,5 +40,10 @@
          </effect>
       </Label>
       <ImageView fitHeight="100.0" fitWidth="124.0" layoutX="670.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true" fx:id="xImg" />
+      <Label fx:id="levelLbl" layoutX="452.0" layoutY="21.0" text="Label">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
