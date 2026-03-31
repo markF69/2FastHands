@@ -37,14 +37,16 @@ public class GameController{
     private TextField inputTF;
     @FXML
     private ImageView xImg;
+    @FXML
+    private Label levelLbl;
 
-
+    Random random = new Random();
 
     private Timeline timer;
     private int secondsLeft = 500;
-    Random random = new Random();
     private ArrayList<Text> wordList = new ArrayList<>();
     private String currQuote;
+    private int currLevel = 1;
 
     @FXML
     private void initialize(){
@@ -184,7 +186,10 @@ public class GameController{
     private void firstGame(List<String> randomWords, List<String> randomQuote){
         startTimer();
         populateBox(randomWords, randomQuote);
-        System.out.println(randomWords.size() + " " + randomQuote.size());
+        //System.out.println(randomWords.size() + " " + randomQuote.size());
+        levelLbl.setText("Level: " + currLevel);
+        currLevel++;
+
 
         int[] stats = {0,0}; // hit - miss
         int goal = wordList.size();
@@ -217,10 +222,6 @@ public class GameController{
                 }
             }
         });
-
-        if (stats[0] == goal){
-            System.out.println("YAY!");
-        }
     }
     // second game has parameters so that it can pass them on to the first game again
     private void secondGame(List<String> randomWords, List<String> randomQuote){
