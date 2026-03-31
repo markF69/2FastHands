@@ -38,4 +38,3 @@ build/
 .DS_Store
 
 TODO.txt
-src/main/resources/UI/sound/buzzer.wav
