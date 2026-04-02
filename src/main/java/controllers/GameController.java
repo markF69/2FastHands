@@ -4,9 +4,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -14,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.sound.SoundClip;
@@ -43,10 +48,11 @@ public class GameController{
     Random random = new Random();
 
     private Timeline timer;
-    private int secondsLeft = 500;
+    //private int secondsLeftOriginal = 110;
     private ArrayList<Text> wordList = new ArrayList<>();
     private String currQuote;
     private int currLevel = 1;
+    private int[] stats = {0,0,0}; // hit - miss - quote miss
 
     @FXML
     private void initialize(){
@@ -158,40 +164,70 @@ public class GameController{
     }
 
     // will be used when you start typing
-    private void startTimer(){
+    private void startTimer(int[] secondsLeftOriginal){
+        //secondsLeftOriginal -= currLevel * 10;
         if (timer != null && timer.getStatus() == Animation.Status.RUNNING){
             timer.stop();
-            System.out.println("MANUAL STOP");
+            //System.out.println("MANUAL STOP");
         }
 
         // timer
         timer = new Timeline();
         timer.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
-            secondsLeft--;
-            timerLbl.setText(String.valueOf(secondsLeft));
+            secondsLeftOriginal[0]--;
+            timerLbl.setText(String.valueOf(secondsLeftOriginal[0]));
             //System.out.println(secondsLeft);
 
-            if (secondsLeft == 0){
+            if (secondsLeftOriginal[0] == 0){
                 //timerLbl.setText("0");
                 timer.stop();
                 System.out.println("Timer stopped");
-            }
+
+                Platform.runLater(() -> {
+                    Alert endSreen = new Alert(Alert.AlertType.INFORMATION);
+                    endSreen.setTitle("END");
+                    endSreen.setHeaderText("Time has run out!");
+                    endSreen.setContentText("Your stats:\nCorrect words: " + stats[0] + "\nMistyped words: " + stats[1] + "\nMistyped quotes: " + stats[2]);
+                    endSreen.getButtonTypes().clear();
+                    ButtonType retry = new ButtonType("Retry");
+                    ButtonType exit = new ButtonType("Exit");
+                    endSreen.getButtonTypes().addAll(retry, exit);
+
+                    Optional<ButtonType> result = endSreen.showAndWait(); // used to get what was clicked
+                    if (result.isPresent()) {
+                        if (result.get() == retry) {
+                            try {
+                                Parent root = FXMLLoader.load(getClass().getResource("/UI/GameUI.fxml"));
+                                Stage stage = (Stage) timerLbl.getScene().getWindow(); // timerlbl is a random element used so we can get the stage
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        } else {
+                            Platform.exit();
+                        }
+                    }
+                }); // platform
+            } // if
         }));
         timer.setCycleCount(Animation.INDEFINITE);
         //secondsLeft = 60;
-        timerLbl.setText(String.valueOf(secondsLeft));
+        timerLbl.setText(String.valueOf(secondsLeftOriginal[0]));
         timer.playFromStart();
     }
 
     private void firstGame(List<String> randomWords, List<String> randomQuote){
-        startTimer();
+        int[] secondsLeftOriginal = new int[]{50}; // array bcs of lambda
+        secondsLeftOriginal[0] -= currLevel*10; // 100 - 90 - 80...
+        startTimer(secondsLeftOriginal);
         populateBox(randomWords, randomQuote);
-        //System.out.println(randomWords.size() + " " + randomQuote.size());
+        System.out.println(randomWords.size() + " " + randomQuote.size());
         levelLbl.setText("Level: " + currLevel);
         currLevel++;
 
 
-        int[] stats = {0,0}; // hit - miss
+
         int goal = wordList.size();
         inputTF.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.SPACE)){
@@ -260,6 +296,7 @@ public class GameController{
                         throw new RuntimeException(ex);
                     }
                     wrongBuzzer.play();
+                    stats[2]++;
                 }
             }
         });
